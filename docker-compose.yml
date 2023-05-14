@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+    php:
+        container_name: youtube-fr-dl-api
+        build:
+            context: ./docker/php
+            args:
+                USER_NAME: ${USER_NAME}
+                USER_GROUP_NAME: ${USER_GROUP_NAME}
+                UID: ${UID}
+                GID: ${GID}
+        environment:
+            PHP_IDE_CONFIG: "serverName=youtube-fr-dl"
+        ports:
+            - '9000:9000'
+        volumes:
+            - ./:/var/www/youtube-fr-dl
+    nginx:
+        container_name: youtube-fr-dl-nginx
+        image: nginx:stable-alpine
+        ports:
+            - '8080:80'
+        volumes:
+            - ./:/var/www/youtube-fr-dl
+            - ./docker/nginx/exchange.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - php
