@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DownloadFragmentFileRequest;
 use App\Http\Requests\GetFragmentRequest;
 use App\Services\FragmentCuttingService;
-use Illuminate\Http\Request;
+use App\Services\FragmentDownloadService;
 use Symfony\Component\HttpFoundation\Response;
 
 class FragmentDownloadController extends Controller
@@ -20,5 +21,10 @@ class FragmentDownloadController extends Controller
         return response()->json([
             'fileName' => $fragmentFileName,
         ]);
+    }
+
+    public function saveFragmentFile(DownloadFragmentFileRequest $request, FragmentDownloadService $fragmentDownloadService): Response
+    {
+        return $fragmentDownloadService->downloadFragmentFile($request->get('fileName'));
     }
 }

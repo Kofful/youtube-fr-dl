@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1'], function () {
     Route::get('download', [FragmentDownloadController::class, 'getFragment']);
+    Route::get('file', [FragmentDownloadController::class, 'saveFragmentFile']);
 });
