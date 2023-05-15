@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -18,13 +19,12 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    /**
-     * Register the exception handling callbacks for the application.
-     */
-    public function register(): void
+    public function render($request, Throwable $e): Response
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        if ($e instanceof RenderableException) {
+            return response()->json(['error' => $e->getMessage()], $e->getCode());
+        }
+
+        return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
