@@ -47,7 +47,7 @@ class FragmentCuttingService
         $filePath =  $this->fragmentsStoragePath . $fileName;
         $timingQuery = '-ss ' . $fragmentTime['start'] . ' -to ' . $fragmentTime['end'];
 
-        $downloadCmd = "ffmpeg $timingQuery -i \"$videoUrl\" $timingQuery -i \"$audioUrl\" -map 0:v -map 1:a -c copy $filePath 2>&1";
+        $downloadCmd = "ffmpeg $timingQuery -i \"$videoUrl\" $timingQuery -i \"$audioUrl\" -map 0:v -map 1:a -c:a aac -c:v h264 -b:v 29445k -map_chapters -1 $filePath 2>&1";
 
         exec($downloadCmd, $output, $resultCode);
 
